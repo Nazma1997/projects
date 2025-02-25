@@ -26,5 +26,7 @@ export default class AuthController {
     const user = await User.verifyCredentials(email, password)
 
     await auth.use('web').login(user)
+    const redirectPath = user.user_type === 'CUSTOMER' ? 'user/dashboard' : 'admin/dashboard'
+    return { redirect: redirectPath }
   }
 }
