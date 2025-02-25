@@ -9,6 +9,7 @@
 
 import router from '@adonisjs/core/services/router'
 import '#controllers/Http/auth/auth_routes'
+import '#controllers/Http/tickets/ticket_routes'
 
 router.get('/', async () => {
   return {
