@@ -9,15 +9,15 @@ export default class Ticket extends BaseModel {
   declare user_id: number
 
   @column()
-  declare subject: string
+  declare ticket_id: number
   @column()
-  declare description: string
+  declare parent_id: number
 
   @column()
-  declare is_submitted: boolean
+  declare is_seen: boolean
 
   @column()
-  declare status: 'Resolved' | 'Closed' | 'Open' | 'Not submitted'
+  declare is_reply: boolean
 
   @column.dateTime({ autoCreate: true })
   declare created_at: DateTime

@@ -1,5 +1,12 @@
 import TicketQuery from './ticket_query.js'
-import { CreateTicket } from './ticket_type.js'
+import {
+  CreateTicket,
+  GetTicketById,
+  GetTicketByIdAndUserId,
+  GetTicketByUser,
+  UpdateTicket,
+  UpdateTicketStatus,
+} from './ticket_type.js'
 
 export default class TicketService {
   public ticketQuery: TicketQuery
@@ -10,5 +17,21 @@ export default class TicketService {
 
   public async CreateTicket(payload: CreateTicket) {
     return this.ticketQuery.CreateTicket(payload)
+  }
+  public async UpdateTicket(payload: UpdateTicket) {
+    return this.ticketQuery.UpdateTicket(payload)
+  }
+  public async UpdateTicketStatus(payload: UpdateTicketStatus) {
+    return this.ticketQuery.UpdateTicketStatus(payload)
+  }
+  public async DeleteTicket(query: GetTicketByIdAndUserId) {
+    return this.ticketQuery.DeleteTicket(query)
+  }
+
+  public async GetAllTickets() {
+    return this.ticketQuery.GetAllTickets()
+  }
+  public async GetTicketByUser(query: GetTicketByUser) {
+    return this.ticketQuery.GetTicketByUser(query)
   }
 }
