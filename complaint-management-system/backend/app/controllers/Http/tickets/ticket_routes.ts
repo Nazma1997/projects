@@ -9,11 +9,11 @@ router
     router.post('update-status', [TicketController, 'UpdateTicketStatus'])
     router.post('delete', [TicketController, 'DeleteTicket'])
     router.get('all', [TicketController, 'GetAllTickets'])
-    router.get('by-user', [TicketController, 'GetTicketByUser'])
+   
   })
   .middleware(
     middleware.auth({
       guards: ['web'],
     })
   )
-  .prefix('ticket')
+  .prefix('api/tickets')

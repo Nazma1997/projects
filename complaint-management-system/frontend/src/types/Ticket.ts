@@ -5,6 +5,10 @@ export interface Ticket {
     status: string;
    
   }
+  export interface User{
+    user_type: string
+    name: string
+  }
   
   export interface Reply {
     id: number;

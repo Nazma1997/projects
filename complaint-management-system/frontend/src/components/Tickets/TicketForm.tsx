@@ -3,30 +3,47 @@ import { Ticket } from '../../types/Ticket';
 import { Form, Input, Button } from 'antd';
 
 interface TicketFormProps {
-  onSubmit: (ticketData: Omit<Ticket, 'id' | 'created_at' | 'updated_at'>) => void;
+  onSubmit: (ticketData: Ticket) => void;
+  id?: number
 }
 
-const TicketForm: React.FC<TicketFormProps> = ({ onSubmit }) => {
+const TicketForm: React.FC<TicketFormProps> = ({ onSubmit, id}) => {
+
   const [form] = Form.useForm();
 
   const handleSubmit = (values: { subject: string; description: string }) => {
-    onSubmit({ ...values, status: 'Open' });
+
+
+    if (id) {
+      onSubmit({
+        ...values, id: id,
+        status: 'Open'
+
+      })
+    }
+    else {
+      onSubmit({
+        ...values, status: 'Open',
+
+      });
+    }
     form.resetFields();
   };
 
+
   return (
     <Form form={form} layout="vertical" onFinish={handleSubmit}>
-      <Form.Item 
-        label="Subject" 
-        name="subject" 
+      <Form.Item
+        label="Subject"
+        name="subject"
         rules={[{ required: true, message: 'Please enter a subject' }]}
       >
         <Input placeholder="Enter subject" />
       </Form.Item>
 
-      <Form.Item 
-        label="Description" 
-        name="description" 
+      <Form.Item
+        label="Description"
+        name="description"
         rules={[{ required: true, message: 'Please enter a description' }]}
       >
         <Input.TextArea placeholder="Enter description" rows={4} />

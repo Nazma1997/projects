@@ -17,7 +17,7 @@ export default class Ticket extends BaseModel {
   declare is_submitted: boolean
 
   @column()
-  declare status: 'Resolved' | 'Closed' | 'Open' | 'Not submitted'
+  declare status: 'Resolved' | 'Closed' | 'Open' 
 
   @column.dateTime({ autoCreate: true })
   declare created_at: DateTime

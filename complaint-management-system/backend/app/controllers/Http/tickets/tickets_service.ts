@@ -28,8 +28,8 @@ export default class TicketService {
     return this.ticketQuery.DeleteTicket(query)
   }
 
-  public async GetAllTickets() {
-    return this.ticketQuery.GetAllTickets()
+  public async GetAllTickets(filter: any) {
+    return this.ticketQuery.GetAllTickets(filter)
   }
   public async GetTicketByUser(query: GetTicketByUser) {
     return this.ticketQuery.GetTicketByUser(query)

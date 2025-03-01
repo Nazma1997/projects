@@ -7,11 +7,14 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import Navbar from './components/Header';
 import { Notifications } from './components/notifications/Notifications';
-
+import { ToastContainer } from 'react-toastify';
+import ProtectedRoute from './context/ProtectedRoutes';
 
 const App: React.FC = () => {
   return (
-    <Router>
+    <>
+     <ToastContainer />
+     <Router>
       <AuthProvider>
         <TicketProvider>
         <Navbar />
@@ -20,14 +23,22 @@ const App: React.FC = () => {
         
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/notifications" element={<Notifications />} />
+            <Route element={<ProtectedRoute />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/notifications" element={<Notifications />} />
+              </Route>
+           
+           
             
           </Routes>
          
         </TicketProvider>
       </AuthProvider>
     </Router>
+     </>
+
+
+  
   );
 };
 

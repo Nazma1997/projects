@@ -5,7 +5,7 @@ import TicketItem from './TicketItem';
 interface TicketListProps {
   tickets: Ticket[];
   onDelete: (id: number) => void;
-  onUpdate?: (id: number, updatedData: Partial<Ticket>) => void;
+  onUpdate?: ( updatedData: Partial<Ticket>) => void;
 }
 
 const TicketList: React.FC<TicketListProps> = ({ tickets, onDelete, onUpdate }) => {
@@ -13,7 +13,7 @@ const TicketList: React.FC<TicketListProps> = ({ tickets, onDelete, onUpdate }) 
     <div >
       {tickets.length ?  tickets?.map(ticket => (
         <TicketItem
-          key={ticket.id}
+         
           ticket={ticket}
           onDelete={onDelete}
           onUpdate={onUpdate}
