@@ -5,6 +5,7 @@ import { defineConfig, stores } from '@adonisjs/session'
 const sessionConfig = defineConfig({
   enabled: true,
   cookieName: 'adonis-session',
+  driver: 'cookie',
 
   /**
    * When set to true, the session id cookie will be deleted
@@ -25,8 +26,8 @@ const sessionConfig = defineConfig({
   cookie: {
     path: '/',
     httpOnly: true,
-    secure: app.inProduction,
-    sameSite: 'lax',
+    secure: true,
+    sameSite: 'none',
   },
 
   /**
@@ -42,7 +43,7 @@ const sessionConfig = defineConfig({
    */
   stores: {
     cookie: stores.cookie(),
-  }
+  },
 })
 
 export default sessionConfig

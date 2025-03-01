@@ -2,8 +2,8 @@ export interface CreateTicket {
   user_id: number
   subject: string
   description: string
-  is_submitted: boolean
-  status: 'Resolved' | 'Closed' | 'Open' | 'Not submitted'
+
+  status: 'Resolved' | 'Closed' | 'Open' 
 }
 export interface UpdateTicket {
   id: number
@@ -11,11 +11,11 @@ export interface UpdateTicket {
   subject?: string
   description?: string
   is_submitted?: boolean
-  status?: 'Resolved' | 'Closed' | 'Open' | 'Not submitted'
+  status?: 'Resolved' | 'Closed' | 'Open' 
 }
 export interface UpdateTicketStatus {
   id: number
-  status: 'Resolved' | 'Closed' | 'Open' | 'Not submitted'
+  status: 'Resolved' | 'Closed' | 'Open' 
 }
 export interface GetTicketByIdAndUserId {
   id: number
@@ -23,4 +23,5 @@ export interface GetTicketByIdAndUserId {
 }
 export interface GetTicketByUser {
   user_id: number
+  filter: string
 }

@@ -1,26 +1,22 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Layout, Menu, Avatar, Badge, Dropdown, Space } from 'antd';
 import { NotificationOutlined, UserOutlined, PoweroffOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const { Header } = Layout;
 
 const Navbar: React.FC = () => {
-    const [isSignedIn, setIsSignedIn] = useState(true);
+    
+    const isSignedIn = localStorage.getItem('user')
+   const { logout } = useContext(AuthContext)!;
 
+   
 
-    const handleSignOut = () => {
-        setIsSignedIn(false);
-    };
-
-    const handleMenuClick = (e: any) => {
-        if (e.key === 'logout') {
-            handleSignOut();
-        }
-    };
+  
 
     const menu = (
-        <Menu onClick={handleMenuClick}>
+        <Menu>
             <Link to='/dashboard'>
                 <Menu.Item key="dashboard">
                     <Space>
@@ -31,7 +27,7 @@ const Navbar: React.FC = () => {
             </Link>
 
 
-            <Menu.Item key="logout">
+            <Menu.Item key="logout" onClick={logout}>
                 <Space>
 
                     Logout

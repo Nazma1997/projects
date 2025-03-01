@@ -3,43 +3,42 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { User } from '../../types/User';
-import { Form, Input, Button, Typography, message, Card } from 'antd';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-
-const { Title } = Typography;
+import { Form, Input, Button, message, Card } from 'antd';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
+const api_end_point = import.meta.env.VITE_BACKEND_URL;
 
 const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const authContext = React.useContext(AuthContext);
 
-  const onFinish = async (values: { username: string; password: string }) => {
+  const onFinish = async (values: { email: string; password: string }) => {
     setLoading(true);
-    try {
-      const response = await axios.post<{ user: User; token: string }>('/api/auth/login', {
-        username: values.username,
-        password: values.password,
-      });
+    const response = await axios.post<{ user: User; token: string }>(`${api_end_point}/auth/user/login`, {
+      email: values.email,
+      password: values.password,
+      
+    },
+    {
+      withCredentials: true,
+    });
 
-      if (authContext) {
-        authContext.login(response.data.user);
-        localStorage.setItem('token', response.data.token); 
-        message.success('Login successful!');
-        navigate('/dashboard'); 
-      }
-    } catch (err) {
-      message.error('Invalid username or password');
-    } finally {
-      setLoading(false);
+    
+   
+    if (authContext) {
+      authContext.login(response);
+ 
+      message.success('Login successful!');
+      navigate('/dashboard'); 
     }
   };
 
   return (
     <div style={{ maxWidth: 400, margin: '0 auto', padding: '24px' }}>
       <Card>
-        <Title level={2} style={{ textAlign: 'center', marginBottom: '24px' }}>
+      <h1  style={{ textAlign: 'center', marginBottom: '24px',  }}>
           Login
-        </Title>
+        </h1>
         <Form
           name="login"
           initialValues={{ remember: true }}
@@ -47,12 +46,12 @@ const Login: React.FC = () => {
           autoComplete="off"
         >
           <Form.Item
-            name="username"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            name="email"
+            rules={[{ required: true, message: 'Please input your email!' }]}
           >
             <Input
-              prefix={<UserOutlined />}
-              placeholder="Username"
+              prefix={<MailOutlined />}
+              placeholder="Email"
             />
           </Form.Item>
 

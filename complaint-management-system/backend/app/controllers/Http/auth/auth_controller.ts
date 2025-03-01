@@ -9,24 +9,23 @@ export default class AuthController {
     this.authService = new AuthService()
   }
 
-  public async Register({ request, auth }: HttpContext) {
+  public async Register({ request }: HttpContext) {
     const payload = await request.validateUsing(RegisterValidator)
-    const user = await this.authService.Register(payload)
-    if (user) {
-      await auth.use('web').login(user)
-      return {
-        redirect: 'user/dashboard',
-      }
-    }
+    return this.authService.Register(payload)
   }
   public async Login({ request, auth }: HttpContext) {
     const payload = await request.validateUsing(LoginValidator)
     const { email, password } = payload
 
     const user = await User.verifyCredentials(email, password)
-
     await auth.use('web').login(user)
-    const redirectPath = user.user_type === 'CUSTOMER' ? 'user/dashboard' : 'admin/dashboard'
-    return { redirect: redirectPath }
+    return {
+      user_type: user.user_type,
+      name: user.name,
+    }
+  }
+
+  public async Logout({ auth }: HttpContext) {
+    return await auth.use('web').logout()
   }
 }

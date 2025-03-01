@@ -3,44 +3,41 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { User } from '../../types/User';
-import { Form, Input, Button, Typography, message, Card } from 'antd';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Form, Input, Button, message, Card } from 'antd';
+import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
+const api_end_point = import.meta.env.VITE_BACKEND_URL;
 
-const { Title } = Typography;
+
 
 const Register: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const authContext = React.useContext(AuthContext);
 
-  const onFinish = async (values: { username: string; password: string }) => {
-    setLoading(true);
-    try {
-      const response = await axios.post<{ user: User; token: string }>('/api/auth/register', {
-        username: values.username,
-        password: values.password,
-        role: 'Customer', // Default role for new users
-      });
+  console.log('api_end_point', api_end_point)
 
-      if (authContext) {
-        authContext.login(response.data.user);
-        localStorage.setItem('token', response.data.token); // Store token for future requests
-        message.success('Registration successful!');
-        navigate('/dashboard'); // Redirect to dashboard after registration
-      }
-    } catch (err) {
-      message.error('Registration failed. Please try again.');
-    } finally {
-      setLoading(false);
+  const onFinish = async (values: { name: string; email: string, password: string }) => {
+    setLoading(true);
+    const response = await axios.post<{ user: User; token: string }>(`${api_end_point}/auth/user/register`, {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+
+    });
+
+    if (authContext) {
+      authContext.login(response.data.user);
+      message.success('Registration successful!');
+      navigate('/login');
     }
   };
 
   return (
     <div style={{ maxWidth: 400, margin: '0 auto', padding: '24px' }}>
       <Card>
-        <Title level={2} style={{ textAlign: 'center', marginBottom: '24px' }}>
+        <h1 style={{ textAlign: 'center', marginBottom: '24px', }}>
           Register
-        </Title>
+        </h1>
         <Form
           name="register"
           initialValues={{ remember: true }}
@@ -48,12 +45,22 @@ const Register: React.FC = () => {
           autoComplete="off"
         >
           <Form.Item
-            name="username"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            name="name"
+            rules={[{ required: true, message: 'Please input your name!' }]}
           >
             <Input
               prefix={<UserOutlined />}
-              placeholder="Username"
+              placeholder="name"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="email"
+            rules={[{ required: true, message: 'Please input your email!' }]}
+          >
+            <Input
+              prefix={<MailOutlined />}
+              placeholder="Email"
             />
           </Form.Item>
 

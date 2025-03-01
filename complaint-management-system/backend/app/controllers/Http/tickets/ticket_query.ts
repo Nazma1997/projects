@@ -39,9 +39,22 @@ export default class TicketQuery {
     return Ticket.query().where(query).delete()
   }
   public async GetTicketByUser(query: GetTicketByUser) {
-    return Ticket.query().where(query)
+
+    const tickets = Ticket.query()
+    if (query.filter === 'All') {
+      return tickets
+        .whereIn('status', ['Open', 'Closed', 'Resolved'])
+        .where('user_id', query.user_id)
+    } else {
+      return tickets.where('status', query.filter).where('user_id', query.user_id)
+    }
   }
-  public async GetAllTickets() {
-    return Ticket.query()
+  public async GetAllTickets(filter: any) {
+    const tickets = Ticket.query()
+    if (filter === 'All') {
+      return tickets.whereIn('status', ['Open', 'Resolved', 'Closed'])
+    } else {
+      return tickets.where('status', filter)
+    }
   }
 }

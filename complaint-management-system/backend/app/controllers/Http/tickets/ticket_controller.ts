@@ -13,14 +13,15 @@ export default class TicketController {
     this.ticketService = new TicketService()
   }
 
-  public async CreateTicket({ request, auth }: HttpContext) {
-    const payload = await request.validateUsing(CreateTicketValidator)
-    this.ticketService.CreateTicket({
+  public async CreateTicket(ctx: HttpContext) {
+    const payload = await ctx.request.validateUsing(CreateTicketValidator)
+    return this.ticketService.CreateTicket({
       ...payload,
-      user_id: auth.user!.id,
+      user_id: ctx.auth.user!.id,
     })
   }
   public async UpdateTicket({ request, auth }: HttpContext) {
+    console.log('request', request)
     const payload = await request.validateUsing(UpdateTicketValidator)
     return this.ticketService.UpdateTicket({
       user_id: auth.user!.id,
@@ -44,16 +45,16 @@ export default class TicketController {
     })
   }
 
-  public async GetAllTickets({ auth }: HttpContext) {
-    const isAdmin = auth.user!.user_type === 'ADMIN'
-    if (!isAdmin) {
-      throw new Error('Unauthorized')
-    }
-    return this.ticketService.GetAllTickets()
-  }
-  public async GetTicketByUser({ auth }: HttpContext) {
-    return this.ticketService.GetTicketByUser({
-      user_id: auth.user!.id,
-    })
+  public async GetAllTickets({ auth, request }: HttpContext) {
+    const queryParams = request.qs()
+    const filter = queryParams.filter || 'All'
+
+    if (auth.user!.user_type === 'ADMIN') {
+      return this.ticketService.GetAllTickets(filter)
+    } else
+      return this.ticketService.GetTicketByUser({
+        user_id: auth.user!.id,
+        filter: filter,
+      })
   }
 }

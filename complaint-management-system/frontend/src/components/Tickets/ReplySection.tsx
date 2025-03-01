@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Input, Button, Space } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
-import { column } from '@adonisjs/lucid/orm';
+
 
 const { TextArea } = Input;
 
