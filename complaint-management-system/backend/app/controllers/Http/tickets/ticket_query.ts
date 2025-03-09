@@ -40,7 +40,7 @@ export default class TicketQuery {
   }
   public async GetTicketByUser(query: GetTicketByUser) {
 
-    const tickets = Ticket.query()
+    const tickets = Ticket.query().orderBy('id', 'desc')
     if (query.filter === 'All') {
       return tickets
         .whereIn('status', ['Open', 'Closed', 'Resolved'])
@@ -50,7 +50,7 @@ export default class TicketQuery {
     }
   }
   public async GetAllTickets(filter: any) {
-    const tickets = Ticket.query()
+    const tickets = Ticket.query().orderBy('id', 'desc')
     if (filter === 'All') {
       return tickets.whereIn('status', ['Open', 'Resolved', 'Closed'])
     } else {
